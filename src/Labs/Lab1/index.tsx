@@ -2,6 +2,10 @@ export default function Lab1() {
   return (
     <div id="wd-lab1">
       <h2>Lab 1</h2>
+      <div id="wd-student-info">
+        <b>Name:</b> Casey Benzing<br/>
+        <b>Class:</b> CS4550 02 Spring 2025
+      </div>
       <h3>HTML Examples</h3>
       <div id="wd-h-tag">
         <h4>Heading Tags</h4>
@@ -266,7 +270,7 @@ tag to tell browsers to render the gaps.
       <a href="https://www.lipsum.com" id="wd-lipsum">click here</a>
       to get dummy text<br/>
       And
-      <a href="TODOGIT" id="wd-github">here</a>
+      <a href="https://github.com/benzing-c/kambaz-react-web-app/tree/a1" id="wd-github">here</a>
       for the github repo<br/>
     </div>
 );}
