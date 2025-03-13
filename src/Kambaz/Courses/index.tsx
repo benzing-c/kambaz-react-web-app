@@ -16,7 +16,7 @@ export default function Courses() {
     const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
     const { currentUser } = useSelector((state: any) => state.accountReducer);
 
-    if(!enrollments.some((enrollment) => enrollment.user === currentUser._id 
+    if(!enrollments.some((enrollment: { user: any; course: any; }) => enrollment.user === currentUser._id 
     && enrollment.course === course._id)) {
         return <Navigate to="/Kambaz/Dashboard" />;
     }

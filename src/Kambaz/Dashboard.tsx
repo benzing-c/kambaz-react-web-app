@@ -46,7 +46,7 @@ export default function Dashboard() {
         <Row xs={1} md={5} className="g-4">
           {courses.filter((course: { _id: string; }) =>
             enrollments.some(
-              (enrollment) =>
+              (enrollment: { user: any; course: string; }) =>
                 showAll ||
                 enrollment.user === currentUser._id &&
                 enrollment.course === course._id
@@ -64,7 +64,7 @@ export default function Dashboard() {
                       {course.description} </Card.Text>
                     <Button variant="primary"> Go </Button>
                     
-                    {enrollments.some((enrollment) =>
+                    {enrollments.some((enrollment: { user: any; course: string; }) =>
                       enrollment.user === currentUser._id &&
                       enrollment.course === course._id) ?
                     <Button variant="danger" onClick={(e) => {dispatch(deleteEnrollment({user: currentUser._id, course: course._id}))}}>Unenroll</Button> :
