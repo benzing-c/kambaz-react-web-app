@@ -1,102 +1,69 @@
 import { Button, Col, Form, FormCheck, FormControl, FormGroup, FormLabel, FormSelect, Row } from "react-bootstrap";
 import { Link, useParams } from "react-router";
-import {assignments} from "../../Database";
+import ProtectedComponent from "../../Account/ProtectedComponent";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addAssignment, updateAssignment } from "./reducer";
 
 export default function AssignmentEditor() {
     const { cid, aid } = useParams();
-    const assignment = assignments.find((assignment) => assignment._id === aid);
+    const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+    const [assignment, setAssignment] = useState<any>({});
+    const dispatch = useDispatch();
+    const fetchAssignment = () => {
+      aid === "Editor" ? setAssignment({...assignment, course: cid}):
+      setAssignment(assignments.find((a: { _id: string | undefined; }) => a._id === aid));
+    }
 
+    useEffect(() => { fetchAssignment(); }, []);
     return (
       <div id="wd-assignments-editor">
         <FormGroup className="mb-3" controlId="wd-assignment-name">
           <FormLabel>Assignment Name</FormLabel>
-          <FormControl value={assignment && assignment.title} />
+          <FormControl defaultValue={assignment && assignment.title} 
+            onChange={(e) => setAssignment({ ...assignment, title:  e.target.value })}/>
         </FormGroup>
         <FormGroup className="mb-3" controlId="wd-assignment-desc">
-          <FormControl as="textarea" rows={10} value={assignment && assignment.description} />
+          <FormControl as="textarea" rows={10} defaultValue={assignment && assignment.description} />
         </FormGroup>
+        
         <Form.Group as={Row} className="mb-3">
           <Form.Label column sm={2}> Points </Form.Label>
           <Col sm={10}>
-            <Form.Control value={assignment && assignment.points} />
+            <Form.Control type="number" defaultValue={assignment && assignment.points} 
+            onChange={(e) => setAssignment({ ...assignment, points:  e.target.value })}/>
           </Col>
         </Form.Group>
-        
-        <Row>
-          <Col sm={2}>
-            <FormLabel> Assignment Group </FormLabel>
-          </Col>
-          <Col sm={10}>
-            <FormSelect>
-              <option selected>ASSIGNMENTS</option>
-              <option>QUIZZES</option>
-              <option>EXAMS</option>
-            </FormSelect>
-          </Col>
-        </Row>
-        <br/>
-        <Row>
-          <Col sm={2}>
-            <FormLabel> Display Grade as </FormLabel>
-          </Col>
-          <Col sm={10}>
-            <FormSelect>
-              <option selected>Percentage</option>
-              <option>Points</option>
-              <option>Letter</option>
-            </FormSelect>
-          </Col>
-        </Row>
-        <br/>
-        <Row>
-          <Col sm={2}>
-            <FormLabel> Submission Type </FormLabel>
-          </Col>
-          <Col sm={10}>
-            <FormSelect>
-              <option selected>Online</option>
-              <option>In Person</option>
-            </FormSelect>
-            <br/>
-            <h6>Online Entry Options</h6>
-            <FormCheck id="wd-check" label="Text Entry"/>
-            <FormCheck id="wd-check" label="Website URL"/>
-            <FormCheck id="wd-check" label="Media Recording"/>
-            <FormCheck id="wd-check" label="Student Annotations"/>
-            <FormCheck id="wd-check" label="File Uploads"/>
-          </Col>
-        </Row>
 
-        <br/>
-        <Row>
+        <Form.Group as={Row} className="mb-3">
           <Col sm={2}>
             <FormLabel> Assign </FormLabel>
           </Col>
           <Col sm={10}>
-            <FormGroup className="mb-3" controlId="wd-assign-to">
-              <FormLabel>Assign To</FormLabel>
-              <FormControl value="Everyone" />
-            </FormGroup>
             <FormGroup className="mb-3" controlId="wd-due-date">
               <FormLabel> Due Date </FormLabel>
-              <FormControl value={assignment && assignment.due} />
+              <FormControl type="date" defaultValue={assignment && assignment.due} 
+              onChange={(e) => setAssignment({ ...assignment, due:  e.target.value })}/>
             </FormGroup>
             <FormGroup className="mb-3" controlId="wd-available-from">
               <FormLabel> Available from </FormLabel>
-              <FormControl value={assignment && assignment.available} />
+              <FormControl type="date" defaultValue={assignment && assignment.available} 
+              onChange={(e) => setAssignment({ ...assignment, available:  e.target.value })}/>
             </FormGroup>
             <FormGroup className="mb-3" controlId="wd-available-until">
               <FormLabel> until </FormLabel>
-              <FormControl value="05 / 20 / 2024" />
+              <FormControl type="date" defaultValue={assignment && assignment.until} 
+              onChange={(e) => setAssignment({ ...assignment, until:  e.target.value })}/>
             </FormGroup>
           </Col>
-        </Row>
+        </Form.Group>
         <hr/>
-        <Link to={`/Kambaz/Courses/${cid}/Assignments`}>
-          <Button variant="danger" size="lg" className="me-1 float-end" id="wd-add-module-btn">
+        <ProtectedComponent><Link to={`/Kambaz/Courses/${cid}/Assignments`}>
+          <Button variant="danger" size="lg" className="me-1 float-end" id="wd-add-module-btn"
+            onClick={() => aid === "Editor" ? dispatch(addAssignment(assignment)) : dispatch(updateAssignment(assignment))}>
             Save
           </Button>
-        </Link>
+        </Link></ProtectedComponent>
         <Link to={`/Kambaz/Courses/${cid}/Assignments`}>
           <Button variant="secondary" size="lg" className="me-1 float-end" id="wd-add-module-btn">
             Cancel

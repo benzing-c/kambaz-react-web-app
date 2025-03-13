@@ -1,16 +1,17 @@
 import { Col, ListGroup, Row } from "react-bootstrap";
 import { BsGripVertical } from "react-icons/bs";
-import LessonControlButtons from "../Modules/LessonControlButtons";
 import { Link, useParams } from "react-router";
-import * as db from "../../Database";
 import { MdOutlineAssignment } from "react-icons/md";
 import AssignmentSearch from "./AssignmentSearch";
 import { FaCaretDown } from "react-icons/fa";
 import GroupControlButtons from "./GroupControlButtons";
+import { useSelector } from "react-redux";
+import AssignmentControlButtons from "./AssignmentControlButtons";
 
 export default function Assignments() {
   const { cid } = useParams();
-  const assignments = db.assignments;
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+  console.log(assignments);
   return (
     <div id="wd-assignments">
       <AssignmentSearch /><ListGroup className="rounded-0" id="wd-modules">
@@ -23,13 +24,13 @@ export default function Assignments() {
           .filter((assignment: any) => assignment.course === cid)
           .map((assignment: any) => (
           <ListGroup.Item className="wd-lesson p-3 ps-1">
-            <Link to={`/Kambaz/Courses/${cid}/Assignments/${assignment._id}`} style={{ textDecoration: 'none', color: 'black' }}>
-              <Row>
-                <Col sm={1}><BsGripVertical className="me-2 fs-3" /> <MdOutlineAssignment className="fs-3"/></Col> 
-                <Col sm={10}><b>{assignment.title}</b> <p className="h6"><span className="text-danger">Multiple Modules</span> <span className="text-secondary">| <b>Not available until</b> {assignment.available} | <b>Due</b> {assignment.due} | {assignment.points} pts</span></p></Col>
-                <Col sm={1}><LessonControlButtons /></Col>
-              </Row>
-            </Link>
+            <Row>
+              <Col sm={1}><BsGripVertical className="me-2 fs-3" /> <MdOutlineAssignment className="fs-3"/></Col> 
+              <Col sm={10}><Link to={`/Kambaz/Courses/${cid}/Assignments/${assignment._id}`} style={{ textDecoration: 'none', color: 'black' }}>
+                <b>{assignment.title}</b> <p className="h6"><span className="text-danger">Multiple Modules</span> <span className="text-secondary">| <b>Not available until</b> {assignment.available} | <b>Due</b> {assignment.due} | {assignment.points} pts</span></p>
+              </Link></Col>
+              <Col sm={1}><AssignmentControlButtons assignmentId={assignment._id} assignmentTitle={assignment.title} /></Col>
+            </Row>
           </ListGroup.Item>))}
         </ListGroup></ListGroup.Item></ListGroup>
       </div>
