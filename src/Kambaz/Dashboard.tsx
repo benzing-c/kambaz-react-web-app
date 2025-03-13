@@ -21,16 +21,16 @@ export default function Dashboard() {
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">
         Dashboard
-        <button className="btn btn-primary float-end" onClick={(e) => setShowAll(!showAll)}>Enrollments</button> 
+        <button className="btn btn-primary float-end" onClick={(_e) => setShowAll(!showAll)}>Enrollments</button> 
       </h1><hr />
 
       <ProtectedComponent><h5>New Course
         <button className="btn btn-primary float-end"
           id="wd-add-new-course-click"
-            onClick={(e) => dispatch(addCourse(course))} > Add 
+            onClick={(_e) => dispatch(addCourse(course))} > Add 
         </button>
         <button className="btn btn-warning float-end me-2"
-          onClick={(e) => dispatch(updateCourse(course))} 
+          onClick={(_e) => dispatch(updateCourse(course))} 
           id="wd-update-course-click">
             Update
         </button>
@@ -67,8 +67,8 @@ export default function Dashboard() {
                     {enrollments.some((enrollment: { user: any; course: string; }) =>
                       enrollment.user === currentUser._id &&
                       enrollment.course === course._id) ?
-                    <Button variant="danger" onClick={(e) => {dispatch(deleteEnrollment({user: currentUser._id, course: course._id}))}}>Unenroll</Button> :
-                    <Button variant="success" onClick={(e) => {dispatch(addEnrollment({user: currentUser._id, course: course._id})); console.log(enrollments)}}>Enroll</Button>}
+                    <Button variant="danger" onClick={(_e) => {dispatch(deleteEnrollment({user: currentUser._id, course: course._id}))}}>Unenroll</Button> :
+                    <Button variant="success" onClick={(_e) => {dispatch(addEnrollment({user: currentUser._id, course: course._id})); console.log(enrollments)}}>Enroll</Button>}
                     <ProtectedComponent>
                       <button onClick={(event) => {
                         event.preventDefault();
