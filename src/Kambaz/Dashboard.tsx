@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { addEnrollment, deleteEnrollment, setEnrollments } from "./Courses/enrollmentsReducer";
 import * as courseClient from "./Courses/client";
 import * as userClient from "./Account/client";
-import { enrollments } from "./Database";
 export default function Dashboard() {
 
   const { currentUser } = useSelector((state: any) => state.accountReducer);

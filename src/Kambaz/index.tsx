@@ -2,29 +2,12 @@ import { Routes, Route, Navigate } from "react-router";
 import Account from "./Account";
 import Dashboard from "./Dashboard";
 import KambazNavigation from "./Navigation";
-import * as userClient from "./Account/client";
 import "./styles.css";
 import ProtectedRoute from "./Account/ProtectedRoute";
 import Session from "./Account/Session";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import Courses from "./Courses";
 
 export default function Kambaz() {
-  const [courses, setCourses] = useState<any[]>([]);
-  const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const fetchCourses = async () => {
-    try {
-      const courses = await userClient.findMyCourses();
-      setCourses(courses);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    fetchCourses();
-  }, [currentUser]);
-
   return (
     <Session>
       <div id="wd-kambaz">
