@@ -1,9 +1,14 @@
 import { Button, Modal } from "react-bootstrap";
 import { deleteAssignment } from "./reducer";
 import { useDispatch } from "react-redux";
+import * as assignmentsClient from "./client";
 
 export default function AssignmentDeleter({ show, handleClose, dialogTitle, assignmentId}: {
     show: boolean; handleClose: () => void; dialogTitle: string; assignmentId: string}) {
+    const removeAssignment = async (assignmentId: string) => {
+        await assignmentsClient.deleteAssignment(assignmentId);
+        dispatch(deleteAssignment(assignmentId));
+    };
     const dispatch = useDispatch();
     return (
         <Modal show={show} onHide={handleClose}>
@@ -14,7 +19,7 @@ export default function AssignmentDeleter({ show, handleClose, dialogTitle, assi
             <Button variant="secondary" onClick={handleClose}> Cancel </Button>
             <Button variant="danger"
                 onClick={() => {
-                dispatch(deleteAssignment(assignmentId));
+                removeAssignment(assignmentId);
                 handleClose();
                 }} > Delete 
             </Button>

@@ -4,12 +4,23 @@ import ProtectedComponent from "../../Account/ProtectedComponent";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addAssignment, updateAssignment } from "./reducer";
+import * as coursesClient from "../client";
+import * as assignmentsClient from "./client";
 
 export default function AssignmentEditor() {
     const { cid, aid } = useParams();
     const { assignments } = useSelector((state: any) => state.assignmentsReducer);
     const [assignment, setAssignment] = useState<any>({});
     const dispatch = useDispatch();
+    const saveAssignment = async (assignment: any) => {
+      await assignmentsClient.updateAssignment(assignment);
+      dispatch(updateAssignment(assignment));
+    };
+    const createAssignmentForCourse = async (assignment: any) => {
+      if (!cid) return;
+      await coursesClient.createAssignmentForCourse(cid, assignment);
+      dispatch(addAssignment(assignment));
+    };
     const fetchAssignment = () => {
       aid === "Editor" ? setAssignment({...assignment, course: cid}):
       setAssignment(assignments.find((a: { _id: string | undefined; }) => a._id === aid));
@@ -59,13 +70,13 @@ export default function AssignmentEditor() {
         </Form.Group>
         <hr/>
         <ProtectedComponent><Link to={`/Kambaz/Courses/${cid}/Assignments`}>
-          <Button variant="danger" size="lg" className="me-1 float-end" id="wd-add-module-btn"
-            onClick={() => aid === "Editor" ? dispatch(addAssignment(assignment)) : dispatch(updateAssignment(assignment))}>
+          <Button variant="danger" size="lg" className="me-1 float-end" id="wd-save-assignment-btn"
+            onClick={() => aid === "Editor" ? createAssignmentForCourse(assignment) : saveAssignment(assignment)}>
             Save
           </Button>
         </Link></ProtectedComponent>
         <Link to={`/Kambaz/Courses/${cid}/Assignments`}>
-          <Button variant="secondary" size="lg" className="me-1 float-end" id="wd-add-module-btn">
+          <Button variant="secondary" size="lg" className="me-1 float-end" id="wd-canel-assignment-edit-btn">
             Cancel
           </Button>
         </Link>
