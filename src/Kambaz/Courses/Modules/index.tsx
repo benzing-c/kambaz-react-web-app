@@ -38,7 +38,7 @@ export default function Modules() {
     };
     useEffect(() => {
       fetchModules();
-    }, []);
+    }, [cid]);
 
     return (
       <div>

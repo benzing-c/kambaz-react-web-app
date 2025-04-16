@@ -79,7 +79,8 @@ export default function Dashboard() {
       <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2> <hr />
       <div id="wd-dashboard-courses">
         <Row xs={1} md={5} className="g-4">
-          {courses.filter((course: { _id: string; }) =>
+          {courses
+          .filter((course: { _id: string; }) =>
             enrollments.some(
               (enrollment: { user: any; course: string; }) =>
                 showAll ||
