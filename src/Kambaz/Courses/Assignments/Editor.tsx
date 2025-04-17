@@ -35,7 +35,8 @@ export default function AssignmentEditor() {
             onChange={(e) => setAssignment({ ...assignment, title:  e.target.value })}/>
         </FormGroup>
         <FormGroup className="mb-3" controlId="wd-assignment-desc">
-          <FormControl as="textarea" rows={10} defaultValue={assignment && assignment.description} />
+          <FormControl as="textarea" rows={10} defaultValue={assignment && assignment.description}
+           onChange={(e) => setAssignment({ ...assignment, description:  e.target.value })}/>
         </FormGroup>
         
         <Form.Group as={Row} className="mb-3">
