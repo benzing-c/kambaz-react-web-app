@@ -7,6 +7,8 @@ import AssignmentEditor from "./Assignments/Editor";
 import { FaAlignJustify } from "react-icons/fa";
 import PeopleTable from "./People/Table";
 import { useSelector } from "react-redux";
+import * as client from "./client";
+import { useEffect, useState } from "react";
 
 export default function Courses() {
     const { cid } = useParams();
@@ -15,6 +17,15 @@ export default function Courses() {
     const { pathname } = useLocation();
     const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
     const { currentUser } = useSelector((state: any) => state.accountReducer);
+    const [users, setUsers] = useState<any[]>([]);
+    const fetchUsers = async () => {
+        const users = await client.findUsersForCourse(cid!);
+        setUsers(users);
+        setUsers(users.map((u: any) => (u.user)));
+    }
+    useEffect(() => {
+            fetchUsers();
+        }, []);
 
     if(!enrollments.some((enrollment: { user: any; course: any; }) => enrollment.user === currentUser._id 
     && enrollment.course === course._id)) {
@@ -38,7 +49,7 @@ export default function Courses() {
                         <Route path="Modules" element={<Modules />} />
                         <Route path="Assignments" element={<Assignments />} />
                         <Route path="Assignments/:aid" element={<AssignmentEditor />} />
-                        <Route path="People" element={<PeopleTable />} />
+                        <Route path="People" element={<PeopleTable users={users}/>} />
                     </Routes>
                 </div>
             </div>

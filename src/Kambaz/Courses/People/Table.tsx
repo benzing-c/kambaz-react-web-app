@@ -14,7 +14,7 @@ export default function PeopleTable({ users = [] }: { users?: any[] }) {
         <tbody>
 
 {users
-  .map((user: any) => (
+  .map((user: any) => (user &&
     <tr key={user._id}>
       <td className="wd-full-name text-nowrap">
       <Link to={`/Kambaz/Account/Users/${user._id}`} className="text-decoration-none">

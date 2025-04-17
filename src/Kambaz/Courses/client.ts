@@ -15,8 +15,7 @@ export const findModulesForCourse = async (courseId: string) => {
 };
 
 export const findAssignmentsForCourse = async (courseId: string) => {
-    const response = await axios
-    .get(`${COURSES_API}/${courseId}/assignments`);
+    const response = await axiosWithCredentials.get(`${COURSES_API}/${courseId}/assignments`);
     return response.data;
 };
 
@@ -65,5 +64,10 @@ export const enroll = async (userId: string, courseId: string) => {
 
 export const createCourse = async (course: any) => {
     const { data } = await axiosWithCredentials.post(COURSES_API, course);
+    return data;
+};
+
+export const findUsersForCourse = async (courseId: string) => {
+    const { data } = await axios.get(`${COURSES_API}/${courseId}/users`);
     return data;
 };
