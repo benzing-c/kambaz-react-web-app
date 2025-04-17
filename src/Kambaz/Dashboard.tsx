@@ -32,9 +32,39 @@ export default function Dashboard() {
     dispatch(addCourse(course));
   };
   const fetchCourses = async () => {
-    const courses = await courseClient.fetchAllCourses();
-    dispatch(setCourses(courses));
-  };
+    try {
+      console.log("he");
+    const allCourses = await courseClient.fetchAllCourses();
+    console.log(allCourses);
+    console.log("hello");
+    const enrolledCourses = await userClient.findCoursesForUser(
+    currentUser._id
+    );
+    console.log(enrolledCourses);
+    console.log("hi");
+    console.log(allCourses.map((course: any) => {
+    if (enrolledCourses.find((c: any) => c._id === course._id)) {
+    return { ...course, enrolled: true };
+    } else {
+    return course;
+    }
+    }));
+    const courses = allCourses.map((course: any) => {
+      if (enrolledCourses.find((c: any) => c._id === course._id)) {
+      return { ...course, enrolled: true };
+      } else {
+      return course;
+      }
+      });
+    setCourses(courses);
+    } catch (error) {
+    console.error(error);
+    }
+    };
+  // const fetchCourses = async () => {
+  //   const courses = await courseClient.fetchAllCourses();
+  //   dispatch(setCourses(courses));
+  // };
   const fetchEnrollments = async () => {
     const enrollments = await courseClient.fetchAllEnrollments();
     dispatch(setEnrollments(enrollments));
@@ -47,8 +77,22 @@ export default function Dashboard() {
     await courseClient.enroll(currentUser._id, courseId);
     dispatch(addEnrollment({user: currentUser._id, course: courseId}));
   };
+  const findCoursesForUser = async () => {
+    try {
+    const courses = await userClient.findCoursesForUser(currentUser._id);
+    setCourses(courses);
+    } catch (error) {
+    console.error(error);
+    }
+    };
   useEffect(() => {
-    fetchCourses();
+    console.log(showAll);
+    if(showAll){
+      console.log("test");
+    fetchCourses();console.log(courses);} else {
+      console.log("t32");
+      findCoursesForUser();
+    }
     fetchEnrollments();
   }, [currentUser]);
   
@@ -80,13 +124,6 @@ export default function Dashboard() {
       <div id="wd-dashboard-courses">
         <Row xs={1} md={5} className="g-4">
           {courses
-          .filter((course: { _id: string; }) =>
-            enrollments.some(
-              (enrollment: { user: any; course: string; }) =>
-                showAll ||
-                enrollment.user === currentUser._id &&
-                enrollment.course === course._id
-              ))
             .map((course: {_id: string; name: string; description: string}) => (
             <Col className="wd-dashboard-course" style={{ width: "300px" }}>
               <Card>

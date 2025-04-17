@@ -67,3 +67,12 @@ export const createUser = async (user: any) => {
     const response = await axios.post(`${USERS_API}`, user);
     return response.data;
 };
+
+//fully added
+export const findCoursesForUser = async (userId: string) => {
+    console.log("hey");
+    console.log(userId);
+    const response = await axiosWithCredentials.get(`${USERS_API}/${userId}/courses`);
+    console.log(response.data);
+    return response.data;
+};
