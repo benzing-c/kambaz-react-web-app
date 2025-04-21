@@ -12,7 +12,7 @@ export default function MultipleChoice({updateAnswer, id, title, question, point
                             type="radio"
                             name={`wd-question-${id}`}
                             label={answer}
-                            onChange={(e) => updateAnswer(id, answer)}
+                            onChange={() => updateAnswer(id, answer)}
                         />
                     ))}
                 </Form></p>

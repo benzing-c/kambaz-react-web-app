@@ -11,13 +11,13 @@ export default function TrueFalse({updateAnswer, id, title, question, points}: {
                         type="radio"
                         name={`wd-question-${id}`}
                         label="True"
-                        onChange={(e) => updateAnswer(id, "true")}
+                        onChange={() => updateAnswer(id, "true")}
                     />
                     <Form.Check
                         type="radio"
                         name={`wd-question-${id}`}
                         label="False"
-                        onChange={(e) => updateAnswer(id, "false")}
+                        onChange={() => updateAnswer(id, "false")}
                     />
                 </Form></p>
             </div><br/>

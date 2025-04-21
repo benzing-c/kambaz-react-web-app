@@ -83,7 +83,7 @@ export default function QuestionEditor({questionId} : {questionId: string}) {
                                     type="radio"
                                     name={`wd-question-${questionId}`}
                                     defaultChecked={question.correct === answer}
-                                    onChange={(e) => setQuestion({ ...question, correct: answer })}
+                                    onChange={() => setQuestion({ ...question, correct: answer })}
                                 /></Col>
                                 <Col><FormControl value={answer}
                                     onChange={(e) => changeAnswer(index, e.target.value)}/></Col>
