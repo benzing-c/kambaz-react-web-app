@@ -26,7 +26,7 @@ export default function QuizControlButtons({quiz} : { quiz : any}) {
         <Dropdown.Menu>
           <Dropdown.Item as={Link} to={quiz._id}>Edit</Dropdown.Item>
           <Dropdown.Item onClick={() => handleShow()}>Delete</Dropdown.Item>
-          <Dropdown.Item onClick={() => {console.log(); client.updateQuiz({...quiz, published: !published}); setPublished(!published);}}>{published ? "Unpublish" : "Publish"}</Dropdown.Item>
+          <Dropdown.Item onClick={() => { client.updateQuiz({...quiz, published: !published}); setPublished(!published);}}>{published ? "Unpublish" : "Publish"}</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown></ProtectedComponent>
     </div> );}

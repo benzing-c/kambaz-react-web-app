@@ -4,9 +4,14 @@ import { Button, Col, Form, FormControl, FormGroup, FormLabel, Row } from "react
 import { useDispatch } from "react-redux";
 import { removeQuestion, updateQuestion } from "./reducer";
 import { FaTrash } from "react-icons/fa";
+import MultipleChoice from "./MultipleChoice";
+import TrueFalse from "./TrueFalse";
+import FillInTheBlank from "./FillInTheBlank";
+import { FaPencil } from "react-icons/fa6";
 
 export default function QuestionEditor({questionId} : {questionId: string}) {
     const [question, setQuestion] = useState<any>({});
+    const [editing, setEditing] = useState<any>({});
     const dispatch = useDispatch();
     const fetchQuestion = async () => {
         const question = await client.fetchQuestion(questionId);
@@ -14,11 +19,11 @@ export default function QuestionEditor({questionId} : {questionId: string}) {
     }
     const saveQuestion = async (question: any) => {
         dispatch(updateQuestion(question));
+        setEditing(false);
     }
     const deleteQuestion = async (questionId: string) => {
         await client.deleteQuestion(questionId);
         dispatch(removeQuestion(questionId));
-        console.log("hey123");
     }
     const changeAnswer = (index: number, answer: string) => {
         const answers = question.answers;
@@ -39,9 +44,13 @@ export default function QuestionEditor({questionId} : {questionId: string}) {
         answers.splice(index, 1);
         setQuestion({...question, answers: answers});
     }
-    useEffect(() => {fetchQuestion()}, []);
+    const updateAnswer = (questionId: string, ans: string) => {
+        console.log(questionId + ans);
+    }
+    useEffect(() => {fetchQuestion(); setEditing(true);}, []);
 
     return(
+        editing ?
         <div id={`wd-question-edit-${questionId}`}>
             <div className="card">
                 <h4 className="card-header">
@@ -74,6 +83,7 @@ export default function QuestionEditor({questionId} : {questionId: string}) {
                                     type="radio"
                                     name={`wd-question-${questionId}`}
                                     defaultChecked={question.correct === answer}
+                                    onChange={(e) => setQuestion({ ...question, correct: answer })}
                                 /></Col>
                                 <Col><FormControl value={answer}
                                     onChange={(e) => changeAnswer(index, e.target.value)}/></Col>
@@ -138,6 +148,16 @@ export default function QuestionEditor({questionId} : {questionId: string}) {
                 </p>
             </div>
             <br/>
+        </div>:
+        <div id={`wd-question-edit-${questionId}`}>
+            <Row><Col>{question.type === "Multiple Choice" ? <MultipleChoice updateAnswer={(updateAnswer)} id={question._id} title={question.title} question={question.question} points={question.points} answers={question.answers} />
+                    : question.type === "True/False" ? <TrueFalse updateAnswer={updateAnswer} id={question._id} title={question.title} question={question.question} points={question.points} />
+                    :<FillInTheBlank updateAnswer={updateAnswer} id={question._id} question={question.question} title={question.title} points={question.points} />}
+                </Col>
+            <Col sm={2}><Button variant="secondary" size="lg" className="me-1 float-end" id="wd-add-group-btn" onClick={() => setEditing(true)}>
+                    <FaPencil className="position-relative me-2" style={{ bottom: "1px" }} />
+                    Edit
+            </Button></Col></Row>
         </div>
     )
 }

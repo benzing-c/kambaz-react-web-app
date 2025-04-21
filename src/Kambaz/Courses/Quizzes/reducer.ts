@@ -24,8 +24,8 @@ const quizzesSlice = createSlice({
         group: quiz.group,
         shuffle: quiz.shuffle,
         time: quiz.time,
-        multipleAttempts: quiz.multipleAttempts,
-        //todo SHOW CORRECT ANS
+        numAttempts: quiz.numAttempts,
+        showCorrectAnswer: quiz.showCorrectAnswer,
         accessCode: quiz.accessCode,
         oneAtATime: quiz.oneAtATime,
         webcamRequired: quiz.webcamRequired,
@@ -42,11 +42,6 @@ const quizzesSlice = createSlice({
             a._id === quiz._id ? quiz : a
         ) as any;
     },
-    // editModule: (state, { payload: moduleId }) => {
-    //   state.modules = state.modules.map((m: any) =>
-    //     m._id === moduleId ? { ...m, editing: true } : m
-    //   ) as any;
-    // },
   },
 });
 export const { addQuiz, updateQuiz, deleteQuiz, setQuizzes } =

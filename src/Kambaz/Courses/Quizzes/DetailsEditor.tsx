@@ -13,17 +13,13 @@ export default function DetailsEditor() {
     const [quiz, setQuiz] = useState<any>({});
     const dispatch = useDispatch();
     const saveQuiz = async (quiz: any) => {
-        console.log("saved");
       await quizzesClient.updateQuiz(quiz);
       dispatch(updateQuiz(quiz));
     };
     const createQuizForCourse = async (quiz: any) => {
-      console.log("hey1");
         if (!cid) return;
-      console.log("created");
-      await coursesClient.createQuizForCourse(cid, quiz);
-      dispatch(addQuiz(quiz));
-      console.log("test40");
+      const q = await coursesClient.createQuizForCourse(cid, quiz);
+      dispatch(addQuiz(q));
     };
     const fetchQuiz = () => {
       qid === "Editor" ? setQuiz({...quiz, course: cid}):
@@ -92,16 +88,25 @@ export default function DetailsEditor() {
             <b>Options</b><br/>
             <Form.Check defaultChecked={quiz.shuffle} label="Shuffle Answers"
                 onChange={(e) => setQuiz({ ...quiz, shuffle:  e.target.checked })}/>
-            {/* TODO TIME LIMIT */}
-            <Form.Check defaultChecked={quiz.multipleAttempts} label="Multiple Attempts"
-                onChange={(e) => setQuiz({ ...quiz, multipleAttempts:  e.target.checked })}/>
+            <Form.Check defaultChecked={quiz.numAttempts > 1} label="Multiple Attempts"
+                onChange={(e) => setQuiz({ ...quiz, numAttempts: e.target.checked ?  2 : 1 })}/>
+            {quiz.numAttempts > 1 ? <Row>
+              <Col sm={2}><FormLabel>Number of Attempts:</FormLabel></Col>
+              <Col><FormControl type="number" defaultValue={quiz.numAttempts} 
+                  onChange={(e) => setQuiz({...quiz, numAttempts: e.target.value})}/></Col>
+            </Row> : ""}
             <Form.Check defaultChecked={quiz.oneAtATime} label="One Question At A Time"
                 onChange={(e) => setQuiz({ ...quiz, oneAtATime:  e.target.checked })}/>
             <Form.Check defaultChecked={quiz.webcamRequired} label="Webcam Required"
                 onChange={(e) => setQuiz({ ...quiz, webcamRequired:  e.target.checked })}/>
             <Form.Check defaultChecked={quiz.lockQuestions} label="Lock Questions On Answer"
                 onChange={(e) => setQuiz({ ...quiz, lockQuestions:  e.target.checked })}/>
-            {/* TODO SHOW ANSWERs*/}
+            <FormLabel> Show Answers </FormLabel>
+              <FormControl type="date" defaultValue={quiz && quiz.showCorrectAnswers} 
+              onChange={(e) => setQuiz({ ...quiz, showCorrectAnswers:  e.target.value })}/>
+            <FormLabel>Time Limit (Minutes)</FormLabel>
+            <FormControl type="number" defaultValue={quiz && quiz.time} 
+                onChange={(e) => setQuiz({ ...quiz, time:  e.target.value })}/>
             <FormLabel>Access Code</FormLabel>
             <FormControl defaultValue={quiz && quiz.accessCode} 
                 onChange={(e) => setQuiz({ ...quiz, accessCode:  e.target.value })}/>
@@ -150,6 +155,3 @@ export default function DetailsEditor() {
         </Link>
       </div>
   );}
-
-// Time Limit - 20 Minutes (default)
-// Show Correct Answers - If and when correct answers are shown to students

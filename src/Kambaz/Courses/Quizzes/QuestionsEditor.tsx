@@ -24,7 +24,6 @@ export default function QuestionsEditor() {
         }
     const fetchQuestions = async () => {
         const questions = await quizzesClient.findQuestionsForQuiz(qid as string);
-        questions.map((question: any) => (console.log(question.title)));
         dispatch(setQuestions(questions));
     }
     const addQuestion = async () => {

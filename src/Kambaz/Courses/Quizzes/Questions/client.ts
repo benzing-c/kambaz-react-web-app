@@ -17,3 +17,8 @@ export const fetchQuestion = async (questionId: string) => {
     const response = await axiosWithCredentials.get(`${QUESTIONS_API}/${questionId}`)
     return response.data;
 }
+
+export const fetchQuestions = async () => {
+    const response = await axiosWithCredentials.get(`${QUESTIONS_API}`)
+    return response.data;
+}

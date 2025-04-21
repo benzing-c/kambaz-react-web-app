@@ -3,7 +3,6 @@ const REMOTE_SERVER = import.meta.env.VITE_REMOTE_SERVER;
 const ASSIGNMENTS_API = `${REMOTE_SERVER}/api/assignments`;
 
 export const updateAssignment = async (assignment: any) => {
-    console.log(assignment);
     const { data } = await axios.put(`${ASSIGNMENTS_API}/${assignment._id}`, assignment);
     return data;
 };

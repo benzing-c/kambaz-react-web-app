@@ -31,6 +31,11 @@ export default function QuizDetails() {
                         Preview
                     </Button></Link>
                 </ProtectedComponent>
+                <ProtectedComponent>
+                    <Link to="Response"><Button variant="secondary" size="lg" className="me-1 float-end" id="wd-add-group-btn">
+                        View Results
+                    </Button></Link>
+                </ProtectedComponent>
                 {currentUser.role === "STUDENT" ? 
                   <Link to="Response"><Button variant="danger" size="lg" className="me-1 float-end" id="wd-add-group-btn">
                      View Quiz
@@ -54,10 +59,14 @@ export default function QuizDetails() {
                <Col sm={3}><b >Time Limit</b></Col><Col sm={9}>{quiz.time} minutes</Col> 
             </Row>
             <Row>
-               <Col sm={3}><b >Multiple Attempts</b></Col><Col sm={9}>{quiz.multipleAttempts != null && quiz.multipleAttempts.toString()}</Col> 
+               <Col sm={3}><b >Multiple Attempts</b></Col><Col sm={9}>{quiz.numAttempts != null && (quiz.numAttempts > 1).toString()}</Col> 
             </Row>
-            {/* TODO How Many Attempts - 1 (default). If Multiple Attempts is Yes, then can configure how many times the student can retake the quiz */}
-            {/* TODO Show Correct Answers - If and when correct answers are shown to students */}
+            <Row>
+               <Col sm={3}><b >How Many Attempts</b></Col><Col sm={9}>{quiz.numAttempts != null && quiz.numAttempts}</Col> 
+            </Row>
+            <ProtectedComponent><Row>
+               <Col sm={3}><b >Show Correct Answers</b></Col><Col sm={9}>{quiz.showCorrectAnswers != null ? new Date().toJSON() >= quiz.showCorrectAnswers ? "Immediately" : quiz.showCorrectAnswers.slice(0, 10) : ""}</Col> 
+            </Row></ProtectedComponent>
             <ProtectedComponent><Row>
                <Col sm={3}><b >Access Code</b></Col><Col sm={9}>{quiz.accessCode}</Col> 
             </Row></ProtectedComponent>

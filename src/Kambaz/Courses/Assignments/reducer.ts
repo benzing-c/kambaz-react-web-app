@@ -32,11 +32,6 @@ const assignmentsSlice = createSlice({
             a._id === assignment._id ? assignment : a
         ) as any;
     },
-    // editModule: (state, { payload: moduleId }) => {
-    //   state.modules = state.modules.map((m: any) =>
-    //     m._id === moduleId ? { ...m, editing: true } : m
-    //   ) as any;
-    // },
   },
 });
 export const { addAssignment, updateAssignment, deleteAssignment, setAssignments } =

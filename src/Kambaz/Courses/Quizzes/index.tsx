@@ -7,20 +7,36 @@ import { FaCaretDown } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import QuizControlButtons from "./QuizControlButtons";
 import * as coursesClient from "../client";
+import * as questionsClient from "./Questions/client";
+import * as responsesClient from "./Responses/client";
 import { setQuizzes } from "./reducer";
 import { useEffect } from "react";
+import { setQuestions } from "./Questions/reducer";
+import { setResponses } from "./Responses/reducer";
 
 export default function Quizzes() {
   const { cid } = useParams();
   const { quizzes } = useSelector((state: any) => state.quizzesReducer);
+  const { questions } = useSelector((state: any) => state.questionsReducer);
+  const { responses } = useSelector((state: any) => state.responseReducer);
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const dispatch = useDispatch();
   const fetchQuizzes = async () => {
     const quizzes = await coursesClient.findQuizzesForCourse(cid as string);
     dispatch(setQuizzes(quizzes));
   };
+  const fetchQuestions = async () => {
+    const questions = await questionsClient.fetchQuestions();
+    dispatch(setQuestions(questions));
+  };
+  const fetchResponses = async () => {
+    const responses = await responsesClient.fetchUserResponses(currentUser._id);
+    dispatch(setResponses(responses));
+  };
   useEffect(() => {
     fetchQuizzes();
+    fetchQuestions();
+    fetchResponses();
   }, []);
 
   return (
@@ -42,8 +58,13 @@ export default function Quizzes() {
                   {new Date().toJSON() > quiz.until ? <b>Closed </b> 
                       : new Date().toJSON() >= quiz.available ? <span><b> Available until </b> {quiz.until && quiz.until.slice(0, 10)} </span> 
                       : <span><b>Not available until</b> {quiz.available && quiz.available.slice(0, 10)} </span> } 
-                  | <b>Due</b> {quiz.due && quiz.due.slice(0, 10)} | {quiz.points} pts</span></p> 
-                {/* TODO num questions & score */}
+                  | <b>Due</b> {quiz.due && quiz.due.slice(0, 10)} | {quiz.points} pts | {questions.filter((q:any) => q.quiz === quiz._id).length} Questions {currentUser.role === "STUDENT" ? 
+                  `| Score: ${questions.filter((q:any) => q.quiz === quiz._id).reduce((acc: number, q : any) => {
+                        const res = responses.filter((r: any) => r.quiz === quiz._id)
+                          .reduce((acc: any, cur: any) => (cur.attempt > acc.attempt ? cur : acc), {attempt: 0}).answers.find((ans: any) => (ans.question === q._id))?.answer!;
+                          const cor = q.type === "Fill in the Blank" ? q.answers.includes(res) ? 1 : 0 : res === q.correct ? 1 : 0;
+                        return acc + cor * q.points; }, 0)}
+                  / ${questions.filter((q:any) => q.quiz === quiz._id).reduce((acc: number, q:any) => {return acc + q.points}, 0)}` : ""} </span></p> 
               </Link></Col>
               <Col sm={1}><QuizControlButtons quiz={quiz}/></Col>
             </Row>
