@@ -9,6 +9,13 @@ import PeopleTable from "./People/Table";
 import { useSelector } from "react-redux";
 import * as client from "./client";
 import { useEffect, useState } from "react";
+import Quizzes from "./Quizzes";
+import QuizDetails from "./Quizzes/Details";
+import DetailsEditor from "./Quizzes/DetailsEditor";
+import QuestionsEditor from "./Quizzes/QuestionsEditor";
+import QuestionsView from "./Quizzes/QuestionsView";
+import ProtectedComponent from "../Account/ProtectedComponent";
+import ResponseView from "./Quizzes/ResponseView";
 
 export default function Courses() {
     const { cid } = useParams();
@@ -49,6 +56,12 @@ export default function Courses() {
                         <Route path="Modules" element={<Modules />} />
                         <Route path="Assignments" element={<Assignments />} />
                         <Route path="Assignments/:aid" element={<AssignmentEditor />} />
+                        <Route path="Quizzes" element={<Quizzes />} />
+                        <Route path="Quizzes/:qid" element={<QuizDetails />} />
+                        <Route path="Quizzes/:qid/Editor" element={<ProtectedComponent><DetailsEditor /></ProtectedComponent>} />
+                        <Route path="Quizzes/:qid/QuestionEditor" element={<ProtectedComponent><QuestionsEditor /></ProtectedComponent>} />
+                        <Route path="Quizzes/:qid/Attempt" element={<QuestionsView />} />
+                        <Route path="Quizzes/:qid/Response" element={<ResponseView />} />
                         <Route path="People" element={<PeopleTable users={users}/>} />
                     </Routes>
                 </div>

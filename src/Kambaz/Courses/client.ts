@@ -71,3 +71,18 @@ export const findUsersForCourse = async (courseId: string) => {
     const { data } = await axios.get(`${COURSES_API}/${courseId}/users`);
     return data;
 };
+
+export const findQuizzesForCourse = async (courseId: string) => {
+    const response = await axiosWithCredentials.get(`${COURSES_API}/${courseId}/quizzes`);
+    return response.data;
+};
+
+export const createQuizForCourse = async (courseId: string, quiz: any) => {
+    console.log("test38");
+    const response = await axios.post(
+        `${COURSES_API}/${courseId}/quizzes`,
+        quiz
+    );
+    console.log("test39");
+    return response.data;
+};
