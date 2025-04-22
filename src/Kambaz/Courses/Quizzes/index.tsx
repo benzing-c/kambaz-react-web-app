@@ -18,7 +18,6 @@ export default function Quizzes() {
   const { cid } = useParams();
   const { quizzes } = useSelector((state: any) => state.quizzesReducer);
   const { questions } = useSelector((state: any) => state.questionsReducer);
-  const { responses } = useSelector((state: any) => state.responseReducer);
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const dispatch = useDispatch();
   const fetchQuizzes = async () => {
