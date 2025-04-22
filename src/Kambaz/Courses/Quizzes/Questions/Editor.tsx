@@ -47,7 +47,7 @@ export default function QuestionEditor({questionId} : {questionId: string}) {
     const updateAnswer = (questionId: string, ans: string) => {
         console.log(questionId + ans);
     }
-    useEffect(() => {fetchQuestion(); setEditing(true);}, []);
+    useEffect(() => {fetchQuestion(); setEditing(false);}, []);
 
     return(
         editing ?

@@ -4,7 +4,7 @@ export default function FillInTheBlank({updateAnswer, id, title, question, point
     return(
         <div id={`wd-question-${id}`}>
             <div className="card">
-                <h4 className="card-header"> {title} ({points.toString()} points)</h4>
+                <h4 className="card-header"> {title} ({points && points.toString()} points)</h4>
                 <p className="card-body">{question}<hr/>
                     <FormControl onChange={(e) => updateAnswer(id, e.target.value)}/>
                 </p>

@@ -3,7 +3,7 @@ import GreenCheckmark from "../Modules/GreenCheckmark";
 import ProtectedComponent from "../../Account/ProtectedComponent";
 import { useState } from "react";
 import QuizDeleter from "./QuizDeleter";
-import { Dropdown } from "react-bootstrap";
+import { Button, Dropdown } from "react-bootstrap";
 import { Link } from "react-router";
 import * as client from "./client";
 import { FaBan } from "react-icons/fa";
@@ -21,7 +21,7 @@ export default function QuizControlButtons({quiz} : { quiz : any}) {
 
       <ProtectedComponent><Dropdown>
         <Dropdown.Toggle variant="link">
-          {published ? <GreenCheckmark /> : <FaBan className="fs-5"/>}<IoEllipsisVertical className="fs-4" />
+          <Button onClick={() => {client.updateQuiz({...quiz, published: !published}); setPublished(!published);} } className="bg-transparent border-0">{published ? <GreenCheckmark /> : <FaBan className="fs-5 text-danger"/>}</Button><IoEllipsisVertical className="fs-4" />
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <Dropdown.Item as={Link} to={quiz._id}>Edit</Dropdown.Item>

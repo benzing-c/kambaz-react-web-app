@@ -142,7 +142,7 @@ export default function DetailsEditor() {
             Save & Publish
           </Button>
         </Link></ProtectedComponent>
-        <ProtectedComponent><Link to={`/Kambaz/Courses/${cid}/Quizzes`}>
+        <ProtectedComponent><Link to={`/Kambaz/Courses/${cid}/Quizzes/`}>
           <Button variant="danger" size="lg" className="me-1 float-end" id="wd-save-quiz-btn"
             onClick={() => qid === "Editor" ? createQuizForCourse(quiz) : saveQuiz(quiz)}>
             Save

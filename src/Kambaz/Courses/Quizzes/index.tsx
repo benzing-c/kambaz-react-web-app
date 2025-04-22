@@ -60,7 +60,7 @@ export default function Quizzes() {
                       : <span><b>Not available until</b> {quiz.available && quiz.available.slice(0, 10)} </span> } 
                   | <b>Due</b> {quiz.due && quiz.due.slice(0, 10)} | {quiz.points} pts | {questions.filter((q:any) => q.quiz === quiz._id).length} Questions {currentUser.role === "STUDENT" ? 
                   `| Score: ${questions.filter((q:any) => q.quiz === quiz._id).reduce((acc: number, q : any) => {
-                        const res = responses.filter((r: any) => r.quiz === quiz._id)
+                        const res =  responses && responses.filter((r: any) => r.quiz === quiz._id) && responses.filter((r: any) => r.quiz === quiz._id)
                           .reduce((acc: any, cur: any) => (cur.attempt > acc.attempt ? cur : acc), {attempt: 0}).answers.find((ans: any) => (ans.question === q._id))?.answer!;
                           const cor = q.type === "Fill in the Blank" ? q.answers.includes(res) ? 1 : 0 : res === q.correct ? 1 : 0;
                         return acc + cor * q.points; }, 0)}
